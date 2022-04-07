@@ -61,7 +61,9 @@ public class UserService {
                 ));
         Optional<User> userOptional = userRepository.findUserByEmail(userDetails.getEmail());
         if(userOptional.isPresent()){
-            throw new AlreadyExistsException("this email is already linked to another user");
+            if(userOptional.get().getId() != id){
+                throw new AlreadyExistsException("this email is already linked to another user");
+            }
         }
         user.setFirstname(userDetails.getFirstname());
         user.setLastname(userDetails.getLastname());
